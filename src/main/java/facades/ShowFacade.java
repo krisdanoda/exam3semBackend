@@ -74,11 +74,11 @@ public class ShowFacade {
     public ShowDto deleteShowDTO(int id) throws Exception {
 
         EntityManager em = emf.createEntityManager();
-        Show show = em.find(Show.class, id);
-
+        System.out.println("delete " + id);
+        Show show = em.find(Show.class, (long)id);
         try {
             em.getTransaction().begin();
-            em.merge(show);
+            em.remove(show);
             em.getTransaction().commit();
         }finally {
             em.close();
@@ -97,14 +97,14 @@ public class ShowFacade {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
 
         EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
         ShowFacade showFacade =ShowFacade.getFacade(EMF);
 
 
-        System.out.println(showFacade.getShows());
+        showFacade.deleteShowDTO(1);
 
     }
 
