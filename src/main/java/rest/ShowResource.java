@@ -44,7 +44,7 @@ public class ShowResource {
     @Consumes({MediaType.APPLICATION_JSON})
     public Response update(String content){
         ShowDto showDto = GSON.fromJson(content, ShowDto.class);
-        showDto = Facade.createShow(showDto);
+        showDto = Facade.updateShow(showDto);
         return Response.ok().entity(GSON.toJson(showDto)).build();
     }
 

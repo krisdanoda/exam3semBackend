@@ -16,6 +16,7 @@ import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.GeneratedValue;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -32,7 +33,12 @@ public class FestivalResource {
 
 
 
-
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getFestivals(String content){
+        ArrayList<FestivalDto> festivalDtos = festivalFacade.getAllFestivals();
+        return Response.ok().entity(GSON.toJson(festivalDtos)).build();
+            }
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})

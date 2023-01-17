@@ -18,19 +18,19 @@ public class GuestDto implements Serializable {
     private final String name;
     private List<ShowDto> shows = new ArrayList<>();
     private final Long phoneNumber;
-    private  FestivalDto festival;
+    private  InnerFestivalDTO festival;
     private final String status;
 
     private final String email;
 
     private UserDto user;
 
-    public GuestDto(int id, String name, List<ShowDto> shows, Long phoneNumber, FestivalDto festival, String status, String email, UserDto user) {
+    public GuestDto(int id, String name, List<ShowDto> shows, Long phoneNumber, Festival festival, String status, String email, UserDto user) {
         this.id = id;
         this.name = name;
         this.shows = shows;
         this.phoneNumber = phoneNumber;
-        this.festival = festival;
+        this.festival = new InnerFestivalDTO(festival);
         this.status = status;
         this.email = email;
         this.user = user;
@@ -40,7 +40,7 @@ public class GuestDto implements Serializable {
         this.id = Math.toIntExact(guest.getId());
         this.name = guest.getName();
         if (guest.getFestival() != null)
-            this.festival = new FestivalDto(guest.getFestival());
+            this.festival = new InnerFestivalDTO(guest.getFestival());
         this.phoneNumber = guest.getPhoneNumber();
         this.status = guest.getStatus();
         this.email = guest.getEmail();
@@ -58,11 +58,15 @@ public class GuestDto implements Serializable {
         guest.setEmail(this.email);
         guest.setStatus(this.status);
         guest.setPhoneNumber(this.phoneNumber);
-        if (this.festival != null)
+        if (this.festival != null){
             guest.setFestival(this.festival.createEntity());
+            guest.getFestival().getGuestList().add(guest);
+        }
         if (this.shows != null)
-            for (ShowDto show : this.shows) {
-                guest.getShows().add(show.creatEntity());
+            for (ShowDto showDTO : this.shows) {
+                Show show = showDTO.creatEntity();
+                show.getGuestList().add(guest);
+                guest.getShows().add(show);
             }
         return guest;
     }
@@ -83,7 +87,7 @@ public class GuestDto implements Serializable {
         return phoneNumber;
     }
 
-    public FestivalDto getFestival() {
+    public InnerFestivalDTO getFestival() {
         return festival;
     }
 
@@ -150,8 +154,6 @@ public class GuestDto implements Serializable {
             festival.setStartDate(this.startDate);
             return festival;
         }
-
-
     }
 
     public static class InnerShowDto implements Serializable {

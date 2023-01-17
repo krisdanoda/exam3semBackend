@@ -71,7 +71,6 @@ public class ShowFacade {
     public ShowDto deleteShowDTO(int id) throws Exception {
 
         EntityManager em = emf.createEntityManager();
-        System.out.println("delete " + id);
         Show show = em.find(Show.class, (long)id);
         try {
             em.getTransaction().begin();
@@ -100,7 +99,6 @@ public class ShowFacade {
         Show show1 = new Show("Even better show", 1 , "yesterday", "over there");
         showFacade.createShow(new ShowDto(show));
         showFacade.createShow(new ShowDto(show1));
-
     }
 
     public void attendShow(int idShow, int idPerson){
