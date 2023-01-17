@@ -49,6 +49,7 @@ public class ShowFacade {
             em.getTransaction().commit();
         }finally {
             em.close();
+            System.out.println(show);
         }
 
         return new ShowDto(show);

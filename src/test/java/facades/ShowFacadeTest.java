@@ -62,7 +62,7 @@ public class ShowFacadeTest {
         Show acutal = showDto.creatEntity();
 
         assertEquals(showExpected,acutal);
-        assert (showExpected.getId()!=0);
+        assert (acutal.getId()!=0);
 
     }
 

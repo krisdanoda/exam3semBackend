@@ -11,14 +11,14 @@ import java.util.Objects;
  * A DTO for the {@link Show} entity
  */
 public class ShowDto implements Serializable {
-    private final int id;
+    private  int id;
     private final String name;
     private final float duration;
 
     private final String location;
 
     private final String startDateAndTime;
-    private  List<GuestDto> guestList;
+    private List<GuestDto> guestList;
 
     public ShowDto(int id, String name, float duration, String startDateAndTime, List<GuestDto> guestList, String location) {
         this.id = id;
@@ -37,18 +37,18 @@ public class ShowDto implements Serializable {
         this.startDateAndTime = startDateAndTime;
     }
 
-    public ShowDto(Show show){
-        this.id = Math.toIntExact(show.getId());
+    public ShowDto(Show show) {
+        if (show.getId()!=null)
+            this.id = Math.toIntExact(show.getId());
         this.name = show.getName();
         this.duration = show.getDuration();
         this.startDateAndTime = show.getStartDateAndTime();
         this.location = show.getLocation();
-
     }
 
-    public Show creatEntity(){
+    public Show creatEntity() {
         Show show = new Show();
-        show.setId((long)this.id);
+        show.setId((long) this.id);
         show.setLocation(this.location);
         show.setName(this.name);
         show.setDuration(this.duration);

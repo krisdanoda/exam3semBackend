@@ -100,5 +100,16 @@ public class Show {
         this.location = location;
     }
 
+    @Override
+    public String toString() {
+        return "Show{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", duration=" + duration +
+                ", startDateAndTime='" + startDateAndTime + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }
+
     public Show(){}
 }
