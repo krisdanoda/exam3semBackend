@@ -19,17 +19,22 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import entities.User;
 import errorhandling.API_Exception;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import security.errorhandling.AuthenticationException;
 import errorhandling.GenericExceptionMapper;
+
 import javax.persistence.EntityManagerFactory;
+
 import utils.EMF_Creator;
 
 @Path("login")
@@ -51,16 +56,19 @@ public class LoginEndpoint {
             username = json.get("username").getAsString();
             password = json.get("password").getAsString();
         } catch (Exception e) {
-           throw new API_Exception("Malformed JSON Suplied",400,e);
+            throw new API_Exception("Malformed JSON Suplied", 400, e);
         }
 
         try {
             User user = USER_FACADE.getVeryfiedUser(username, password);
-            String token = createToken(username, user.getRolesAsStrings());
+            int id = 0;
+            if (user.getGuestAccount() != null)
+                id = Math.toIntExact(user.getGuestAccount().getId());
+            String token = createToken(username, user.getRolesAsStrings(), id);
             JsonObject responseJson = new JsonObject();
             responseJson.addProperty("username", username);
             JsonArray roles = new JsonArray();
-            for (String role: user.getRolesAsStrings()) {
+            for (String role : user.getRolesAsStrings()) {
                 roles.add(role);
             }
             responseJson.add("roles", roles);
@@ -76,7 +84,7 @@ public class LoginEndpoint {
         throw new AuthenticationException("Invalid username or password! Please try again");
     }
 
-    private String createToken(String userName, List<String> roles) throws JOSEException {
+    private String createToken(String userName, List<String> roles, int id) throws JOSEException {
 
         StringBuilder res = new StringBuilder();
         for (String string : roles) {
@@ -92,6 +100,7 @@ public class LoginEndpoint {
                 .subject(userName)
                 .claim("username", userName)
                 .claim("roles", rolesAsString)
+                .claim("guestID", id)
                 .claim("issuer", issuer)
                 .issueTime(date)
                 .expirationTime(new Date(date.getTime() + TOKEN_EXPIRE_TIME))

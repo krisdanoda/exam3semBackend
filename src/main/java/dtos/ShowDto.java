@@ -3,6 +3,7 @@ package dtos;
 import entities.Guest;
 import entities.Show;
 
+import java.io.Console;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -54,6 +55,7 @@ public class ShowDto implements Serializable {
         show.setDuration(this.duration);
         show.setStartDateAndTime(this.startDateAndTime);
 
+        System.out.println(show);
         return show;
 
     }

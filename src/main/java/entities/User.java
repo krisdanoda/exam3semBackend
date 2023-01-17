@@ -58,6 +58,9 @@ public class User implements Serializable {
   public User(UserDto user){
     this.userName = user.getUserName();
     this.userPass = BCrypt.hashpw(user.getUserPass(), BCrypt.gensalt());
+    for (String roleListRoleName : user.getRoleListRoleNames()) {
+      this.roleList.add(new Role(roleListRoleName));
+    }
     this.guestAccount = user.getGuestAccount().createEntity();
     this.guestAccount.setUser(this);
   }
@@ -99,6 +102,16 @@ public class User implements Serializable {
 
   public Guest getGuestAccount() {
     return guestAccount;
+  }
+
+  @Override
+  public String toString() {
+    return "User{" +
+            "userName='" + userName + '\'' +
+            ", userPass='" + userPass + '\'' +
+            ", guestAccount=" + guestAccount +
+            ", roleList=" + roleList +
+            '}';
   }
 
   public void setGuestAccount(Guest guestAccount) {

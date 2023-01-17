@@ -48,6 +48,11 @@ public class ShowResource {
         return Response.ok().entity(GSON.toJson(showDto)).build();
     }
 
+    @PUT
+    @Path("{idGuest}/{idShow}")
+    public void attend(@PathParam("idGuest") int idGuest,@PathParam("idShow") int idShow) {
+    Facade.attendShow(idShow, idGuest);
+    }
     @DELETE
     @Produces({MediaType.APPLICATION_JSON})
     @Path("{id}")

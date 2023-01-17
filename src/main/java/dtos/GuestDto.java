@@ -1,5 +1,6 @@
 package dtos;
 
+import entities.Festival;
 import entities.Guest;
 import entities.Show;
 import entities.UserDto;
@@ -17,8 +18,7 @@ public class GuestDto implements Serializable {
     private final String name;
     private List<ShowDto> shows = new ArrayList<>();
     private final Long phoneNumber;
-    private final FestivalDto festival;
-
+    private  FestivalDto festival;
     private final String status;
 
     private final String email;
@@ -39,11 +39,12 @@ public class GuestDto implements Serializable {
     public GuestDto(Guest guest) {
         this.id = Math.toIntExact(guest.getId());
         this.name = guest.getName();
-        this.festival = new FestivalDto(guest.getFestival());
+        if (guest.getFestival() != null)
+            this.festival = new FestivalDto(guest.getFestival());
         this.phoneNumber = guest.getPhoneNumber();
         this.status = guest.getStatus();
         this.email = guest.getEmail();
-
+        this.shows = new ArrayList<>();
         for (Show show : guest.getShows()) {
             this.shows.add(new ShowDto(show));
         }
@@ -59,9 +60,10 @@ public class GuestDto implements Serializable {
         guest.setPhoneNumber(this.phoneNumber);
         if (this.festival != null)
             guest.setFestival(this.festival.createEntity());
-        for (ShowDto show : this.shows) {
-            guest.getShows().add(show.creatEntity());
-        }
+        if (this.shows != null)
+            for (ShowDto show : this.shows) {
+                guest.getShows().add(show.creatEntity());
+            }
         return guest;
     }
 
@@ -121,20 +123,51 @@ public class GuestDto implements Serializable {
     /**
      * A DTO for the {@link Show} entity
      */
+
+    private class InnerFestivalDTO implements  Serializable{
+
+        private int id;
+        private String name;
+        private String city;
+        private String startDate;
+        private String duration;
+
+        public InnerFestivalDTO(Festival festival) {
+            this.id = Math.toIntExact(festival.getId());
+            this.name = festival.getName();
+            this.city = festival.getCity();
+            this.startDate = festival.getStartDate();
+            this.duration = festival.getDuration();
+        }
+
+        public Festival createEntity(){
+            Festival festival = new Festival();
+            if (this.id != 0)
+                festival.setId((long) this.id);
+            festival.setCity(this.city);
+            festival.setDuration(this.duration);
+            festival.setName(this.name);
+            festival.setStartDate(this.startDate);
+            return festival;
+        }
+
+
+    }
+
     public static class InnerShowDto implements Serializable {
-        private final Long id;
+        private final int id;
         private final String name;
         private final float duration;
         private final String startDateAndTime;
 
-        public InnerShowDto(Long id, String name, float duration, String startDateAndTime) {
+        public InnerShowDto(int id, String name, float duration, String startDateAndTime) {
             this.id = id;
             this.name = name;
             this.duration = duration;
             this.startDateAndTime = startDateAndTime;
         }
 
-        public Long getId() {
+        public int getId() {
             return id;
         }
 

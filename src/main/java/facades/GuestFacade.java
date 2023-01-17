@@ -1,14 +1,18 @@
 package facades;
 
 import dtos.GuestDto;
+import dtos.ShowDto;
 import entities.Guest;
+import entities.Show;
 import entities.User;
 import entities.UserDto;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GuestFacade {
 
@@ -18,7 +22,7 @@ public class GuestFacade {
     private GuestFacade() {
     }
 
-    public User createGuest(UserDto userDto) {
+    public UserDto createGuest(UserDto userDto) {
         User user = new User(userDto);
         EntityManager em = emf.createEntityManager();
 
@@ -30,10 +34,26 @@ public class GuestFacade {
             em.close();
         }
 
-        return user;
+        return new UserDto(user);
     }
 
+    //Finds all the shows a guest is attending
+    public  List<ShowDto> getShows(int guestID){
+        List<ShowDto> resultList = new ArrayList<>();
+        EntityManager em = emf.createEntityManager();
+        Query query = em.createNativeQuery("SELECT * from shows \n" +
+                "Left outer join shows_guest\n" +
+                "on shows.id = shows_guest.show_id\n" +
+                "Left outer join guests\n" +
+                "ON shows_guest.guest_id = guests.id\n" +
+                "where guests.id = " + guestID, Show.class);
+        List<Show> shows = query.getResultList();
+        for (Show show : shows) {
+            resultList.add(new ShowDto(show));
+        }
 
+        return resultList;
+    }
 
     public static GuestFacade getFacade(EntityManagerFactory _emf) {
         if (instance == null) {
@@ -43,20 +63,22 @@ public class GuestFacade {
         return instance;
     }
 
+
+
     public static void main(String[] args) {
 
 
          EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-        GuestFacade FACADE = GuestFacade.getFacade(EMF);
+        //GuestFacade FACADE = GuestFacade.getFacade(EMF);
 
+        User admin = new User("Admin", "password");
+        EntityManager entityManager = EMF.createEntityManager();
 
-        UserDto Userdto = new UserDto("God", "Jesus");
-        GuestDto guestDto = new GuestDto(0, "god", new ArrayList<>(), 11223344L, null, "single", "g@godmail.com", Userdto);
-        Userdto.setGuestAccount(guestDto);
+        entityManager.getTransaction().begin();
+        entityManager.persist(admin);
 
-
-
-        FACADE.createGuest(Userdto);
+        entityManager.getTransaction().commit();
+        entityManager.close();
 
     }
 

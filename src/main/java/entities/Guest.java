@@ -11,7 +11,7 @@ import java.util.List;
 public class Guest {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name")
@@ -99,5 +99,18 @@ public class Guest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Guest{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", shows=" + shows +
+                ", phoneNumber=" + phoneNumber +
+                ", email='" + email + '\'' +
+                ", status='" + status + '\'' +
+                ", festival=" + festival +
+                '}';
     }
 }
