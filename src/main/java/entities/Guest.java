@@ -6,6 +6,8 @@ import java.util.List;
 
 
 @Entity
+@Table(name = "guests")
+@NamedQuery(name = "Guest.deleteAllRows", query = "DELETE FROM Guest ")
 public class Guest {
 
     @Id
@@ -20,6 +22,9 @@ public class Guest {
 
     @Column(name = "phoneNumber")
     private Long phoneNumber;
+
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "status")
     private String status;
@@ -86,5 +91,13 @@ public class Guest {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

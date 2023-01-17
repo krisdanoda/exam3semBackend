@@ -23,7 +23,24 @@ public class FestivalDto implements Serializable {
         this.duration = duration;
     }
 
+    public FestivalDto(Festival festival) {
+        this.id = Math.toIntExact(festival.getId());
+        this.name = festival.getName();
+        this.city = festival.getCity();
+        this.startDate = festival.getStartDate();
+        this.duration = festival.getDuration();
+    }
 
+    public Festival createEntity() {
+        Festival festival = new Festival();
+        if (this.id != 0)
+            festival.setId((long) this.getId());
+        festival.setCity(this.getCity());
+        festival.setDuration(this.getDuration());
+        festival.setName(this.name);
+        festival.setStartDate(this.getStartDate());
+        return festival;
+    }
 
     public int getId() {
         return id;

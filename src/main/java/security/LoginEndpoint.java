@@ -43,6 +43,7 @@ public class LoginEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(String jsonString) throws AuthenticationException, API_Exception {
+        System.out.println("CHEHFNAOSNHFJMJKJKA LOGIN");
         String username;
         String password;
         try {

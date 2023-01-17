@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "festivals")
+@NamedQuery(name = "Festival.deleteAllRows", query = "DELETE FROM Festival ")
 public class Festival {
     @Id
     @GeneratedValue
@@ -70,5 +72,8 @@ public class Festival {
 
     public void setGuestList(List<Guest> guestList) {
         this.guestList = guestList;
+    }
+
+    public Festival() {
     }
 }

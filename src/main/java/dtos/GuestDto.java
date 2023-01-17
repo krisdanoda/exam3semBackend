@@ -2,8 +2,10 @@ package dtos;
 
 import entities.Guest;
 import entities.Show;
+import entities.UserDto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,18 +15,54 @@ import java.util.Objects;
 public class GuestDto implements Serializable {
     private final int id;
     private final String name;
-    private final List<ShowDto> shows;
+    private List<ShowDto> shows = new ArrayList<>();
     private final Long phoneNumber;
     private final FestivalDto festival;
-    private final UserDto user;
 
-    public GuestDto(int id, String name, List<ShowDto> shows, Long phoneNumber, FestivalDto festival, UserDto user) {
+    private final String status;
+
+    private final String email;
+
+    private UserDto user;
+
+    public GuestDto(int id, String name, List<ShowDto> shows, Long phoneNumber, FestivalDto festival, String status, String email, UserDto user) {
         this.id = id;
         this.name = name;
         this.shows = shows;
         this.phoneNumber = phoneNumber;
         this.festival = festival;
+        this.status = status;
+        this.email = email;
         this.user = user;
+    }
+
+    public GuestDto(Guest guest) {
+        this.id = Math.toIntExact(guest.getId());
+        this.name = guest.getName();
+        this.festival = new FestivalDto(guest.getFestival());
+        this.phoneNumber = guest.getPhoneNumber();
+        this.status = guest.getStatus();
+        this.email = guest.getEmail();
+
+        for (Show show : guest.getShows()) {
+            this.shows.add(new ShowDto(show));
+        }
+    }
+
+    public Guest createEntity() {
+        Guest guest = new Guest();
+        if (this.id != 0)
+            guest.setId((long) this.id);
+        guest.setName(this.name);
+        guest.setEmail(this.email);
+        guest.setStatus(this.status);
+        guest.setPhoneNumber(this.phoneNumber);
+        if (this.festival != null)
+            guest.setFestival(this.festival.createEntity());
+        for (ShowDto show : this.shows) {
+            guest.getShows().add(show.creatEntity());
+        }
+        return guest;
     }
 
     public int getId() {
@@ -83,13 +121,13 @@ public class GuestDto implements Serializable {
     /**
      * A DTO for the {@link Show} entity
      */
-    public static class ShowDto implements Serializable {
+    public static class InnerShowDto implements Serializable {
         private final Long id;
         private final String name;
         private final float duration;
         private final String startDateAndTime;
 
-        public ShowDto(Long id, String name, float duration, String startDateAndTime) {
+        public InnerShowDto(Long id, String name, float duration, String startDateAndTime) {
             this.id = id;
             this.name = name;
             this.duration = duration;
@@ -112,16 +150,6 @@ public class GuestDto implements Serializable {
             return startDateAndTime;
         }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ShowDto entity = (ShowDto) o;
-            return Objects.equals(this.id, entity.id) &&
-                    Objects.equals(this.name, entity.name) &&
-                    Objects.equals(this.duration, entity.duration) &&
-                    Objects.equals(this.startDateAndTime, entity.startDateAndTime);
-        }
 
         @Override
         public int hashCode() {

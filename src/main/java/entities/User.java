@@ -10,6 +10,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 @Entity
 @Table(name = "users")
+@NamedQuery(name = "User.deleteAllRows", query = "DELETE FROM User ")
 public class User implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -24,7 +25,7 @@ public class User implements Serializable {
   @Column(name = "user_pass")
   private String userPass;
 
-  @OneToOne(mappedBy = "user")
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
   private Guest guestAccount;
 
   @JoinTable(name = "user_roles", joinColumns = {
@@ -52,6 +53,13 @@ public class User implements Serializable {
   //TODO Change when password is hashed
   public boolean verifyPassword(String pw) {
     return BCrypt.checkpw(pw, userPass);
+  }
+
+  public User(UserDto user){
+    this.userName = user.getUserName();
+    this.userPass = BCrypt.hashpw(user.getUserPass(), BCrypt.gensalt());
+    this.guestAccount = user.getGuestAccount().createEntity();
+    this.guestAccount.setUser(this);
   }
 
   public User(String userName, String userPass) {
