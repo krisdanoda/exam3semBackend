@@ -22,7 +22,14 @@ public class Populator {
         fe.create(new RenameMeDTO(new RenameMe("First 2", "Last 2")));
         fe.create(new RenameMeDTO(new RenameMe("First 3", "Last 3")));
     }
-    
+
+    public static void populateMkII(){
+        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
+        FacadeExample fe = FacadeExample.getFacadeExample(emf);
+
+    }
+
+
     public static void main(String[] args) {
         populate();
     }
