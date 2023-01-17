@@ -40,8 +40,7 @@ public class ShowFacadeTest {
 
         try {
             em.getTransaction().begin();
-            em.persist(testShow1);
-            em.persist(testShow2);
+            em.createNamedQuery("Show.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -62,6 +61,8 @@ public class ShowFacadeTest {
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Show.deleteAllRows").executeUpdate();
+            em.persist(testShow1);
+            em.persist(testShow2);
             em.getTransaction().commit();
         } finally {
             em.close();
