@@ -9,6 +9,7 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,19 @@ public class FestivalFacade {
     private FestivalFacade() {
     }
 
+    public ArrayList<FestivalDto> getAllFestivals(){
+
+            EntityManager em = emf.createEntityManager();
+            TypedQuery<Festival> query = em.createQuery("SELECT f FROM Festival f",Festival.class);
+            List<Festival> rms = query.getResultList();
+            ArrayList<FestivalDto> festivalDtos = new ArrayList<>();
+
+            for (Festival festival: rms){
+                festivalDtos.add(new FestivalDto(festival));
+            }
+            return festivalDtos;
+    }
+
     public FestivalDto createFestival(FestivalDto festivalDto){
         Festival festival = festivalDto.createEntity();
         EntityManager em = emf.createEntityManager();
@@ -27,11 +41,9 @@ public class FestivalFacade {
             em.getTransaction().begin();
             em.persist(festival);
             em.getTransaction().commit();
-
         } finally {
             em.close();
         }
-
         return new FestivalDto(festival);
     }
 
@@ -46,7 +58,6 @@ public class FestivalFacade {
         } finally {
             em.close();
         }
-
         return new FestivalDto(festival);
     }
 
@@ -58,8 +69,4 @@ public class FestivalFacade {
         }
         return instance;
     }
-
-
-
-
 }

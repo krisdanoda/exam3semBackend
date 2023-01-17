@@ -1,8 +1,10 @@
 package dtos;
 
 import entities.Festival;
+import entities.Guest;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -14,6 +16,8 @@ public class FestivalDto implements Serializable {
     private final String city;
     private final String startDate;
     private final String duration;
+
+    ArrayList<GuestDto> guestList = new ArrayList<>();
 
     public FestivalDto(int id, String name, String city, String startDate, String duration) {
         this.id = id;
@@ -29,6 +33,11 @@ public class FestivalDto implements Serializable {
         this.city = festival.getCity();
         this.startDate = festival.getStartDate();
         this.duration = festival.getDuration();
+        guestList = new ArrayList<>();
+        for (Guest guest : festival.getGuestList()) {
+            guestList.add(new GuestDto(guest));
+        }
+
     }
 
     public Festival createEntity() {
