@@ -3,6 +3,7 @@ package entities;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -101,6 +102,15 @@ public class Guest {
         this.email = email;
     }
 
+
+    public Guest(String name, Long phoneNumber, String email, String status, Festival festival) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.status = status;
+        this.festival = festival;
+    }
+
     @Override
     public String toString() {
         return "Guest{" +
@@ -111,5 +121,21 @@ public class Guest {
                 ", status='" + status + '\'' +
                 ", festival=" + festival +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Guest)) return false;
+        Guest guest = (Guest) o;
+        return Objects.equals(getName(), guest.getName()) && Objects.equals(getPhoneNumber(), guest.getPhoneNumber()) && Objects.equals(getEmail(), guest.getEmail()) && Objects.equals(getStatus(), guest.getStatus());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getPhoneNumber(), getEmail(), getStatus());
+    }
+
+    public Guest() {
     }
 }

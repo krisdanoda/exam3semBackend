@@ -48,7 +48,6 @@ public class LoginEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(String jsonString) throws AuthenticationException, API_Exception {
-        System.out.println("CHEHFNAOSNHFJMJKJKA LOGIN");
         String username;
         String password;
         try {
@@ -73,6 +72,7 @@ public class LoginEndpoint {
             }
             responseJson.add("roles", roles);
             responseJson.addProperty("token", token);
+            System.out.println("login");
             return Response.ok(new Gson().toJson(responseJson)).build();
 
         } catch (JOSEException | AuthenticationException ex) {

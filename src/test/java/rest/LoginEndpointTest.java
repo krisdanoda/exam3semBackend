@@ -91,10 +91,10 @@ public class LoginEndpointTest {
     }
 
     //This is how we hold on to the token after login, similar to that a client must store the token somewhere
-    private static String securityToken;
+    public static String securityToken;
 
     //Utility method to login and set the returned securityToken
-    private static void login(String role, String password) {
+    public static void login(String role, String password) {
         String json = String.format("{username: \"%s\", password: \"%s\"}", role, password);
         securityToken = given()
                 .contentType("application/json")
@@ -103,7 +103,7 @@ public class LoginEndpointTest {
                 .when().post("/login")
                 .then()
                 .extract().path("token");
-        //System.out.println("TOKEN ---> " + securityToken);
+        System.out.println("TOKEN ---> " + securityToken);
     }
 
     private void logOut() {

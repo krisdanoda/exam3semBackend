@@ -69,7 +69,7 @@ public class ShowDto implements Serializable {
 
         show.setGuestList(guestList);
 
-        System.out.println(show);
+
         return show;
 
     }
@@ -222,13 +222,9 @@ public class ShowDto implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ShowDto entity = (ShowDto) o;
-        return Objects.equals(this.id, entity.id) &&
-                Objects.equals(this.name, entity.name) &&
-                Objects.equals(this.duration, entity.duration) &&
-                Objects.equals(this.startDateAndTime, entity.startDateAndTime) &&
-                Objects.equals(this.guestList, entity.guestList);
+        if (!(o instanceof ShowDto)) return false;
+        ShowDto showDto = (ShowDto) o;
+        return Objects.equals(getName(), showDto.getName());
     }
 
     @Override

@@ -7,6 +7,7 @@ import facades.FacadeExample;
 import facades.ShowFacade;
 import utils.EMF_Creator;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
@@ -54,6 +55,7 @@ public class ShowResource {
     Facade.attendShow(idShow, idGuest);
     }
     @DELETE
+   // @RolesAllowed("admin")
     @Produces({MediaType.APPLICATION_JSON})
     @Path("{id}")
     public Response delete(@PathParam("id") int id ) throws Exception {
