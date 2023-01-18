@@ -106,7 +106,6 @@ public class Guest {
         return "Guest{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", shows=" + shows +
                 ", phoneNumber=" + phoneNumber +
                 ", email='" + email + '\'' +
                 ", status='" + status + '\'' +

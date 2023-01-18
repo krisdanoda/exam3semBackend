@@ -108,6 +108,7 @@ public class Show {
                 ", duration=" + duration +
                 ", startDateAndTime='" + startDateAndTime + '\'' +
                 ", location='" + location + '\'' +
+                ", guestList=" + guestList +
                 '}';
     }
 

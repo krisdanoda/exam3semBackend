@@ -46,7 +46,6 @@ public class ShowFacade {
             em.getTransaction().commit();
         }finally {
             em.close();
-            System.out.println(show);
         }
 
         return new ShowDto(show);
@@ -54,7 +53,9 @@ public class ShowFacade {
     }
 
     public ShowDto updateShow(ShowDto showDto){
+        System.out.println(showDto);
         Show show = showDto.creatEntity();
+        System.out.println("update show: " + show);
         EntityManager em = emf.createEntityManager();
 
         try {
