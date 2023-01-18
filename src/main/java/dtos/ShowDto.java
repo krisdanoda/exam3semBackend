@@ -61,11 +61,12 @@ public class ShowDto implements Serializable {
         show.setStartDateAndTime(this.startDateAndTime);
 
         ArrayList<Guest> guestList = new ArrayList<>();
-        for (InnerGuestDto innerGuestDto : this.guestList) {
-            Guest guest = innerGuestDto.createEntity();
-            guest.getShows().add(show);
-            guestList.add(guest);
-        }
+        if (this.guestList != null)
+            for (InnerGuestDto innerGuestDto : this.guestList) {
+                Guest guest = innerGuestDto.createEntity();
+                guest.getShows().add(show);
+                guestList.add(guest);
+            }
 
         show.setGuestList(guestList);
 
