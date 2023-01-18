@@ -152,7 +152,6 @@ public class GuestDto implements Serializable {
             festival.setDuration(this.duration);
             festival.setName(this.name);
             festival.setStartDate(this.startDate);
-            festival.setGuestList(new ArrayList<>());
             return festival;
         }
     }

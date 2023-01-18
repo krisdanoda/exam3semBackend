@@ -14,7 +14,6 @@ import facades.GuestFacade;
 import facades.ShowFacade;
 import utils.EMF_Creator;
 
-import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
@@ -42,7 +41,6 @@ public class FestivalResource {
             }
 
     @POST
-    @RolesAllowed("admin")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response createFestival(String content){
@@ -52,7 +50,6 @@ public class FestivalResource {
         return Response.ok().entity(GSON.toJson(festivalDto)).build();
     }
     @PUT
-    @RolesAllowed("admin")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response updateFestival(String content){
