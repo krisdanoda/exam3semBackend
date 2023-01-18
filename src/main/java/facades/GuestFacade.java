@@ -71,7 +71,7 @@ public class GuestFacade {
          EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
         //GuestFacade FACADE = GuestFacade.getFacade(EMF);
 
-        User admin = new User("Admin", "password");
+        User admin = new User("admin", "password");
         EntityManager entityManager = EMF.createEntityManager();
 
         entityManager.getTransaction().begin();
