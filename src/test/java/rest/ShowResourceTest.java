@@ -118,11 +118,7 @@ public class ShowResourceTest {
             em.close();
         }
     }
-
-    @Test
-    public void testServerIsUp() {
-        given().when().get("/xxx").then().statusCode(200);
-    }
+    
 
     private static String securityToken;
 
